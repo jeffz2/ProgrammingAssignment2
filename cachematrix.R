@@ -3,10 +3,19 @@
 
 ## Write a short comment describing this function
 
-### Creates a list with the original matrix at index 1 and NULL
-### as a placeholder for the inverse at index 2.
+### Creates a list to set and get the value of the matrix and its inverse
 makeCacheMatrix <- function(x = matrix()) {
-  m <- list(x, NULL)
+  m <- NULL
+  set <- function(y) {
+    x <<- y
+    m <<- NULL
+  }
+  get <- function()x
+  setinverse <- function(solve) m <<- solve
+  getinverse <- function() m
+  list(set = set, get = get, setinverse = setinverse,
+       getinverse, getinverse)
+  
 }
 
 
@@ -16,10 +25,14 @@ makeCacheMatrix <- function(x = matrix()) {
 ## Adds the inverse matrix if not already in the list
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-  if (x[[2]] == solve(x[[1]])) {
-    x[[2]]
+  m <- x$getmean()
+  if (!is.null(m)) {
+    message("getting cached data")
+    return(m)
   }
-  else {
-    x[[2]] <- solve(x[[1]])
-  }
+  data <- x$get()
+  m <- solve(data, ...)
+  x$setinverse(m)
+  m
 }
+
